@@ -1,11 +1,9 @@
 public abstract class Move
 {
-    public int EnergyCost { get; private set; }
+    public abstract string Name { get; }
+    public abstract int EnergyCost { get; set; }
 
-    public Move(int energyCost)
-    {
-        EnergyCost = energyCost;
-    }
+    public Move() { }
 
-    public abstract void Use();
+    public abstract void Use(CombatHandler ch, Character c);
 }

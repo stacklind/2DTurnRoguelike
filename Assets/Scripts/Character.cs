@@ -11,11 +11,13 @@ public class Character
     public int CurrentEnergy { get; set; }
     public int Initiative { get; set; }
 
-    public Character(int maxHealth, int maxEnergy, Move[] moves, int initiative)
+    public int Damage { get; set; }
+    public Character(int maxHealth, int maxEnergy, Move[] moves, int initiative, int damage)
     {
         MaxHealth = CurrentHealth = maxHealth;
         MaxEnergy = CurrentEnergy = maxEnergy;
         moveSet = new List<Move>(moves);
         Initiative = initiative;
+        Damage = damage;
     }
 }
