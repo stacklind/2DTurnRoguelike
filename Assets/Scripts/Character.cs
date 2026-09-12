@@ -1,23 +1,22 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Character
 {
     private List<Move> moveSet;
 
+    public HealthHandler Health { get; set; }
     public List<Move> MoveSet { get => moveSet; }
-    public int MaxHealth { get; set; }
-    public int CurrentHealth { get; set; }
-    public int MaxEnergy { get; set; }
-    public int CurrentEnergy { get; set; }
     public int Initiative { get; set; }
-
-    public int Damage { get; set; }
-    public Character(int maxHealth, int maxEnergy, Move[] moves, int initiative, int damage)
+    public DamageHandler Damage { get; set; }
+    public CritHandler Crit { get; set; }
+    public Character(int maxHealth, Move[] moves, int initiative, int minDamage, int maxDamage, 
+        float criticalChance = 0.05f, float criticalMultiplier = 1.6f)
     {
-        MaxHealth = CurrentHealth = maxHealth;
-        MaxEnergy = CurrentEnergy = maxEnergy;
+        Health = new HealthHandler(maxHealth);
         moveSet = new List<Move>(moves);
         Initiative = initiative;
-        Damage = damage;
+        Damage = new DamageHandler(minDamage, maxDamage);
+        Crit = new CritHandler(criticalChance, criticalMultiplier);
     }
 }

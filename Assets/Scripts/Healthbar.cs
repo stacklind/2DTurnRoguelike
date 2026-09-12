@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Healthbar : MonoBehaviour
+public class HealthBar : MonoBehaviour
 {
     [SerializeField]
     private Transform currentHealth;
@@ -9,10 +9,17 @@ public class Healthbar : MonoBehaviour
     private float current;
     private float step;
 
-    private void Start()
+    private void OnEnable()
     {
         target = current = 1f;
         step = 0;
+        CombatHandler.Events.Subscribe<CombatEvent.DamageEvent>(HandleDamageEvent);
+    }
+
+    private void OnDisable()
+    {
+        CombatHandler.Events.Unsubscribe<CombatEvent.DamageEvent>(HandleDamageEvent);
+
     }
 
     private void Update()
@@ -31,8 +38,12 @@ public class Healthbar : MonoBehaviour
         }
     }
 
-    public void UpdateHealthbar(float ratio)
+    public void HandleDamageEvent(CombatEvent.DamageEvent evt)
     {
-        target = Mathf.Round(ratio * 100f) / 100f;
+        if(evt.Target.transform == gameObject.transform.parent)
+        {
+            float ratio = (float)evt.Target.Character.Health.CurrentHealth / (float)evt.Target.Character.Health.MaxHealth;
+            target = Mathf.Round(ratio * 100f) / 100f;
+        }
     }
 }

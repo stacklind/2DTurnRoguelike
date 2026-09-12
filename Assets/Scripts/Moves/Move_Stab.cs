@@ -1,16 +1,16 @@
-using UnityEngine;
-
-public class Move_Stab : Move
+public class Move_Stab : Move, IDealsDamage, ICanCrit
 {
     public override string Name { get; } = "Stab";
-    public override int EnergyCost { get; set; } = 2;
-    public float Damage { get; set; } = 0.9f;
+    public float DamageModifier { get; set; } = 0.9f;
+    public float CritChanceModifier { get; set; } = 1.5f;
 
-    public Move_Stab() { }
+    public Move_Stab()
+    { 
+    }
 
-    public override void Use(CombatHandler ch, Character c)
+    public override void Use(Character character)
     {
-        Combatant target = ch.GetMonsterTeam()[0];
-        target.Damage(Mathf.FloorToInt(Damage * c.Damage));
+        float finalModifier = character.Crit.Roll(CritChanceModifier) ? DamageModifier * character.Crit.Multiplier : DamageModifier;
+        CombatHandler.State.MonsterTeam[0].TakeDamage(character.Damage.CalculateDamage(finalModifier));
     }
 }
