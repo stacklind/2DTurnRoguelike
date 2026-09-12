@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8535791447248234668}
   - component: {fileID: 9126687280572641244}
-  - component: {fileID: 8639402926371764490}
+  - component: {fileID: 5315036967785459412}
   m_Layer: 0
-  m_Name: Character
+  m_Name: Combatant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,7 +93,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &8639402926371764490
+--- !u!114 &5315036967785459412
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,10 +102,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1447064770269858346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec5beefc342777448a43db10af74cbd9, type: 3}
+  m_Script: {fileID: 11500000, guid: a980f1934d42a104f950b823e98fe33d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CombatantObject
-  healthBar: {fileID: 9183033184226356228}
+  m_EditorClassIdentifier: Assembly-CSharp::Combatant
 --- !u!1 &2988690230431818085
 GameObject:
   m_ObjectHideFlags: 0

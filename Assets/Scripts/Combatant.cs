@@ -1,34 +1,25 @@
 using UnityEngine;
 
-public class Combatant
+public class Combatant : MonoBehaviour
 {
-    private CombatantMono mono;
-    private Healthbar healthBar;
+    public Character Character { get; set; }
+    public bool IsPlayer { get; private set; }
 
-    public Character Character { get; }
-    public bool IsPlayer { get; }
-
-    public Combatant(Character character, bool isPlayer, CombatantMono mono)
+    public void TakeDamage(int amount)
     {
-        Character = character;
+        Character.Health.ReduceHealth(amount);
+        CombatHandler.Events.Publish(new CombatEvent.DamageEvent(amount, this));
+    }
+
+    public void Initialize(Character c, bool isPlayer)
+    {
+        Character = c;
         IsPlayer = isPlayer;
-        this.mono = mono;
     }
 
-    public void Damage(int amount)
+    public void UseMove(int index)
     {
-        Character.CurrentHealth = Character.CurrentHealth - amount < 0 ? 0 : Character.CurrentHealth - amount;
-
-        mono.HealthBar.UpdateHealthbar((float) Character.CurrentHealth / Character.MaxHealth);
-
-        if(Character.CurrentHealth == 0)
-        {
-            Die();
-        }
-    }
-
-    private void Die()
-    {
-
+        Character.MoveSet[index].Use(Character);
+        CombatHandler.Events.Publish(new CombatEvent.EndTurnEvent(this));
     }
 }
