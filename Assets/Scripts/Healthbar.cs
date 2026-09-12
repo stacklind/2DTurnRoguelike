@@ -26,7 +26,7 @@ public class HealthBar : MonoBehaviour
     {
         if(target != current)
         {
-            step += 0.5f * Time.deltaTime;
+            step += 1f * Time.deltaTime;
             float temp = Mathf.Lerp(current, target, step);
             currentHealth.localScale = new Vector3(temp, 1f, 1f);
 

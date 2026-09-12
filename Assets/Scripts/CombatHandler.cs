@@ -24,8 +24,7 @@ public class CombatHandler : MonoBehaviour
     {
         if (!combatQueue.Current.IsPlayer)
         {
-            EndTurn();
-            return;
+            combatQueue.Current.UseMove(0);
         }
     }
 

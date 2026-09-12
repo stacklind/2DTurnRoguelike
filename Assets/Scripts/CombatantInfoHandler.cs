@@ -20,7 +20,7 @@ public class CombatantInfoHandler : MonoBehaviour
     {
         healthInfo.text = $"HP: {evt.Combatant.Character.Health.CurrentHealth}/{evt.Combatant.Character.Health.MaxHealth}";
         damageInfo.text = $"DMG: {evt.Combatant.Character.Damage.MinDamage}-{evt.Combatant.Character.Damage.MaxDamage}";
-        critInfo.text = $"CRIT: {evt.Combatant.Character.Crit.Chance * 100:F0}% / {evt.Combatant.Character.Crit.Multiplier * 100:F0}%x";
+        critInfo.text = $"CRIT: {evt.Combatant.Character.Crit.Chance * 100:F0}% / {evt.Combatant.Character.Crit.Multiplier * 100:F0}%";
         statusInfo.text = "STATUS: <<PLACEHOLDER>>";
     }
 }

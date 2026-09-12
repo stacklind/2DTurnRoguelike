@@ -8,7 +8,7 @@ public class Move_Stab : Move, IDealsDamage, ICanCrit
     { 
     }
 
-    public override void Use(Character character)
+    public override void Use(ICharacter character)
     {
         float finalModifier = character.Crit.Roll(CritChanceModifier) ? DamageModifier * character.Crit.Multiplier : DamageModifier;
         CombatHandler.State.MonsterTeam[0].TakeDamage(character.Damage.CalculateDamage(finalModifier));
