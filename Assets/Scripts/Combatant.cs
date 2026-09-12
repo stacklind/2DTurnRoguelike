@@ -2,8 +2,16 @@ using UnityEngine;
 
 public class Combatant : MonoBehaviour
 {
-    public Character Character { get; set; }
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
+
+    public ICharacter Character { get; set; }
     public bool IsPlayer { get; private set; }
+
+    private void Start()
+    {
+        spriteRenderer.sprite = Character.Avatar;
+    }
 
     public void TakeDamage(int amount)
     {
@@ -11,7 +19,7 @@ public class Combatant : MonoBehaviour
         CombatHandler.Events.Publish(new CombatEvent.DamageEvent(amount, this));
     }
 
-    public void Initialize(Character c, bool isPlayer)
+    public void Initialize(ICharacter c, bool isPlayer)
     {
         Character = c;
         IsPlayer = isPlayer;

@@ -6,5 +6,5 @@ public abstract class Move
     {  
     }
 
-    public abstract void Use(Character character);
+    public abstract void Use(ICharacter character);
 }
