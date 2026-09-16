@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Bandit : ICharacter
 {
+    public string Name { get; }
     public HealthHandler Health { get; }
     public List<Move> MoveSet { get; }
     public int Initiative { get; set; }
@@ -11,8 +12,11 @@ public class Bandit : ICharacter
     public Sprite TalkingHead { get; }
     public Sprite Avatar { get; }
 
+    public CharacterAudio Audio => throw new System.NotImplementedException();
+
     public Bandit()
     {
+        Name = "Bandit";
         Health = new HealthHandler(11);
         MoveSet = new List<Move>();
         MoveSet.Add(new BanditAttack());
