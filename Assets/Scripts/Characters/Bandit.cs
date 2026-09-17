@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class Bandit : ICharacter
@@ -9,8 +10,8 @@ public class Bandit : ICharacter
     public int Initiative { get; set; }
     public DamageHandler Damage { get; }
     public CritHandler Crit { get; }
-    public Sprite TalkingHead { get; }
-    public Sprite Avatar { get; }
+    
+    public CharacterVisuals Visuals { get; }
 
     public CharacterAudio Audio => throw new System.NotImplementedException();
 
@@ -23,14 +24,20 @@ public class Bandit : ICharacter
         Initiative = 5;
         Damage = new DamageHandler(4, 6);
         Crit = new CritHandler(0, 1.0f);
-        TalkingHead = Resources.Load<Sprite>("bandit_talking_head");
-        Avatar = Resources.Load<Sprite>("bandit_avatar");
+
+        Visuals = Resources.Load<CharacterVisuals>("bandit_visuals");
     }
 
     public class BanditAttack : Move, IDealsDamage
     {
-        public override string Name { get; } = "Bandit attack";
+        public override string Name { get; }
+
         public float DamageModifier { get; set; } = 1.0f;
+
+        public BanditAttack()
+        {
+            Name = "Bandit attack";
+        }
 
         public override void Use(ICharacter character)
         {

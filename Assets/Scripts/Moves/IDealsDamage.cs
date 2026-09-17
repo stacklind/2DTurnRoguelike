@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IDealsDamage
 {
-    public float DamageModifier { get; set; }
+    public float DamageModifier { get; }
 }

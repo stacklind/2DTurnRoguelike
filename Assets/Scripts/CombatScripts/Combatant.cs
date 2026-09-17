@@ -10,13 +10,20 @@ public class Combatant : MonoBehaviour
 
     private void Start()
     {
-        spriteRenderer.sprite = Character.Avatar;
+        spriteRenderer.sprite = Character.Visuals.Avatar;
+
     }
 
-    public void TakeDamage(int amount)
+    public void BeginTurn()
     {
-        Character.Health.ReduceHealth(amount);
-        CombatHandler.Events.Publish(new CombatEvent.DamageEvent(amount, this));
+
+    }
+
+    private void Die()
+    {
+        // TODO play death animation and then set active in different method
+        gameObject.SetActive(false);
+        Debug.Log($"{Character.Name} has died.");
     }
 
     public void Initialize(ICharacter c, bool isPlayer)
@@ -25,9 +32,25 @@ public class Combatant : MonoBehaviour
         IsPlayer = isPlayer;
     }
 
-    public void UseMove(int index)
+    public void TakeDamage(int amount)
     {
-        Character.MoveSet[index].Use(Character);
-        CombatHandler.Events.Publish(new CombatEvent.EndTurnEvent(this));
+        Debug.Log($"{Character.Name} took {amount} damage.");
+        bool isDead = Character.Health.ReduceHealth(amount);
+        CombatHandler.Events.Publish(new CombatEvent.DamageEvent(amount, this, isDead));
+
+        if (isDead)
+        {
+            Die();
+        }
+    }
+
+    public void UseMove(Move move)
+    {
+        if (!Character.MoveSet.Contains(move))
+        {
+            throw new System.ArgumentException();
+        }
+
+        move.Use(Character);
     }
 }

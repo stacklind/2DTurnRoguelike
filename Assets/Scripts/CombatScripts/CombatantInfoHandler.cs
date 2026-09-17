@@ -14,13 +14,26 @@ public class CombatantInfoHandler : MonoBehaviour
 
     private void Awake()
     {
-        CombatHandler.Events.Subscribe<CombatEvent.BeginPlayerTurnEvent>(UpdateInfo);
+        CombatHandler.Events.Subscribe<CombatEvent.BeginTurnEvent>(HandleEvent);
+        healthInfo.text = "";
+        damageInfo.text = "";
+        critInfo.text = "";
+        statusInfo.text = "";
     }
-    private void UpdateInfo(CombatEvent.BeginPlayerTurnEvent evt)
+
+    private void HandleEvent(CombatEvent.BeginTurnEvent evt)
     {
-        healthInfo.text = $"HP: {evt.Combatant.Character.Health.CurrentHealth}/{evt.Combatant.Character.Health.MaxHealth}";
-        damageInfo.text = $"DMG: {evt.Combatant.Character.Damage.MinDamage}-{evt.Combatant.Character.Damage.MaxDamage}";
-        critInfo.text = $"CRIT: {evt.Combatant.Character.Crit.Chance * 100:F0}% / {evt.Combatant.Character.Crit.Multiplier * 100:F0}%";
+        if(evt.Combatant.IsPlayer)
+        {
+            UpdateInfo(evt.Combatant);
+        }
+        evt.Step.CompleteTask();
+    }
+    private void UpdateInfo(Combatant combatant)
+    {
+        healthInfo.text = $"HP: {combatant.Character.Health.CurrentHealth}/{combatant.Character.Health.MaxHealth}";
+        damageInfo.text = $"DMG: {combatant.Character.Damage.MinDamage}-{combatant.Character.Damage.MaxDamage}";
+        critInfo.text = $"CRIT: {combatant.Character.Crit.Chance * 100:F0}% / {combatant.Character.Crit.Multiplier * 100:F0}%";
         statusInfo.text = "STATUS: <<PLACEHOLDER>>";
     }
 }
