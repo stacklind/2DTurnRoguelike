@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 72a524ff2a46d0f4c9fda0a53a03e042
+guid: 9060d0a259c53a840bc1f46ebc61a195
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2440076101381017733
-    second: rogue_character_button_selected_0
+      213: -8289736359935750484
+    second: placeholder_animation_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -152,12 +152,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rogue_character_button_selected_0
+      name: placeholder_animation_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
+        width: 512
         height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -167,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b7fa340c6bb132ed0800000000000000
-      internalID: -2440076101381017733
+      spriteID: caec36893b0f4fc80800000000000000
+      internalID: -8289736359935750484
       vertices: []
       indices: 
       edges: []
@@ -187,7 +187,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      rogue_character_button_selected_0: -2440076101381017733
+      placeholder_animation_0: -8289736359935750484
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

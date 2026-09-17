@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEditor.PackageManager;
+using UnityEngine;
 
 public class CombatQueue
 {
@@ -13,26 +14,35 @@ public class CombatQueue
     {
         this.combatants = new List<Combatant>(combatants);
         currentIndex = 0;
-        SortCombatants(null);
-        CombatHandler.Events.Subscribe<CombatEvent.InitiativeChangedEvent>(SortCombatants);
-        IsItPlayersTurn();
+        SortCombatants();
+        CombatHandler.Events.Subscribe<CombatEvent.DeathEvent>(RemoveCombatant);
+        CombatHandler.Events.Subscribe<CombatEvent.InitiativeChangedEvent>(e => SortCombatants());
+        CombatHandler.Events.Subscribe<CombatEvent.EndTurnEvent>(EndTurn);
     }
 
-    public void EndTurn()
+    public void EndTurn(CombatEvent.EndTurnEvent evt)
     {
         UpdateIndex();
-        IsItPlayersTurn();
+
+        evt.Step.nextCombatant = combatants[currentIndex];
+        evt.Step.CompleteTask();
     }
 
-    private void IsItPlayersTurn()
+    private void RemoveCombatant(CombatEvent.DeathEvent evt)
     {
-        if (Current.IsPlayer)
+        int index = combatants.IndexOf(evt.Combatant);
+        combatants.RemoveAt(index);
+
+        if(index < currentIndex)
         {
-            CombatHandler.Events.Publish(new CombatEvent.BeginPlayerTurnEvent(Current));
+            currentIndex--;
         }
+
+        evt.Step.CompleteTask();
+        Debug.Log($"{evt.Combatant.Character.Name} was removed from the combat queue. Remaining combatants: {combatants.Count}, Current index: {currentIndex}");
     }
 
-    private void SortCombatants(CombatEvent.InitiativeChangedEvent evt)
+    private void SortCombatants()
     {
         combatants = combatants.OrderBy(x => x.Character.Initiative).ToList();
     }

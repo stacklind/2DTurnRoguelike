@@ -12,8 +12,7 @@ public interface ICharacter
     public CritHandler Crit { get; }
 
     // Visuals
-    public Sprite TalkingHead { get; }
-    public Sprite Avatar { get; }
+    public CharacterVisuals Visuals { get; }
 
     // Audio
     public CharacterAudio Audio { get; }

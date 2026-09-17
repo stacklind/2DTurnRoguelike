@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface ICanCrit
 {
-    public float CritChanceModifier { get; set; }
+    public float CritChanceModifier { get; }
 }

@@ -4,14 +4,14 @@ using UnityEngine;
 public class Rogue : ICharacter, IRandomlyGenerated<Rogue>
 {
     public string Name { get; }
+
     public HealthHandler Health { get; }
     public List<Move> MoveSet { get; }
     public int Initiative { get; set; }
     public DamageHandler Damage { get; }
     public CritHandler Crit { get; }
 
-    public Sprite TalkingHead { get; }
-    public Sprite Avatar { get; }
+    public CharacterVisuals Visuals { get; }
 
     public CharacterAudio Audio { get; }
 
@@ -24,8 +24,7 @@ public class Rogue : ICharacter, IRandomlyGenerated<Rogue>
         Damage = new DamageHandler(minDamage, maxDamage);
         Crit = new CritHandler(criticalChance, criticalMultiplier);
 
-        TalkingHead = Resources.Load<Sprite>("rogue_talking_head");
-        Avatar = Resources.Load<Sprite>("rogue_avatar");
+        Visuals = Resources.Load<CharacterVisuals>("rogue_visuals");
 
         Audio = Resources.Load<PlayableCharacterAudio>("rogue_audio");
     }

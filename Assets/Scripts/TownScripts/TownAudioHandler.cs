@@ -1,17 +1,8 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-public class TownAudioHandler : MonoBehaviour
+public class TownAudioHandler : SceneAudioHandler
 {
-    private AudioSource _audioSource;
-
-    private void Awake()
-    {
-        _audioSource = gameObject.GetComponent<AudioSource>();
-        InitializeEventListeners();
-    }
-
-    private void InitializeEventListeners()
+    protected override void InitializeEventListeners()
     {
         TownHandler.Events.Subscribe<TownEvent.CharacterSelectedEvent>(OnCharacterSelected);
         TownHandler.Events.Subscribe<TownEvent.CharacterConfirmedEvent>(OnCharacterConfirmed);
@@ -20,18 +11,18 @@ public class TownAudioHandler : MonoBehaviour
     private void OnCharacterSelected(TownEvent.CharacterSelectedEvent evt)
     {
         PlayableCharacterAudio pca = (PlayableCharacterAudio)evt.Character.Audio;
-        Play(pca.Selected);
+        PlaySfx(pca.Selected);
     }
 
     private void OnCharacterConfirmed(TownEvent.CharacterConfirmedEvent evt)
     {
         PlayableCharacterAudio pca = (PlayableCharacterAudio)evt.Character.Audio;
-        Play(pca.Confirmed);
+        PlaySfx(pca.Confirmed);
     }
 
-    private void Play(AudioClip clip)
+    private void PlaySfx(AudioClip clip)
     {
-        _audioSource.Stop();
-        _audioSource.PlayOneShot(clip);
+        sfxSource.Stop();
+        sfxSource.PlayOneShot(clip);
     }
 }

@@ -26,7 +26,7 @@ public class CharacterShopOption : MonoBehaviour
 
     private void UpdateCharacterImage()
     {
-        characterImage.sprite = _character.TalkingHead;
+        characterImage.sprite = _character.Visuals.TalkingHead;
     }
 
     private void UpdateCharacterName()

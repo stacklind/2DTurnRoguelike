@@ -1,11 +1,18 @@
+using UnityEditor.Animations;
+using UnityEngine;
+
 public class Move_Stab : Move, IDealsDamage, ICanCrit
 {
-    public override string Name { get; } = "Stab";
-    public float DamageModifier { get; set; } = 0.9f;
-    public float CritChanceModifier { get; set; } = 1.5f;
+    public override string Name { get; }
+
+    public float DamageModifier { get; } = 0.9f;
+    public float CritChanceModifier { get; } = 1.5f;
+
+    
 
     public Move_Stab()
-    { 
+    {
+        Name = "Stab";
     }
 
     public override void Use(ICharacter character)

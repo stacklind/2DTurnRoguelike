@@ -8,12 +8,15 @@ public class HealthHandler
         MaxHealth = CurrentHealth = maxHealth;
     }
 
-    public void ReduceHealth(int amount)
+    public bool ReduceHealth(int amount)
     {
         CurrentHealth -= amount;
+
         if (CurrentHealth < 0)
         {
             CurrentHealth = 0;
         }
+
+        return CurrentHealth == 0;
     }
 }
