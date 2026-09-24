@@ -14,11 +14,15 @@ public class CombatantInfoHandler : MonoBehaviour
 
     private void Awake()
     {
-        CombatHandler.Events.Subscribe<CombatEvent.BeginTurnEvent>(HandleEvent);
         healthInfo.text = "";
         damageInfo.text = "";
         critInfo.text = "";
         statusInfo.text = "";
+    }
+
+    private void Start()
+    {
+        CombatHandler.Events.Subscribe<CombatEvent.BeginTurnEvent>(HandleEvent);
     }
 
     private void HandleEvent(CombatEvent.BeginTurnEvent evt)

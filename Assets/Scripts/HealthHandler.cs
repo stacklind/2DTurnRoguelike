@@ -1,7 +1,11 @@
+using static UnityEngine.GraphicsBuffer;
+
 public class HealthHandler
 {
     public int CurrentHealth { get; set; }
     public int MaxHealth { get; set; }
+
+    public float Ratio => (float) CurrentHealth / MaxHealth;
 
     public HealthHandler(int maxHealth)
     {

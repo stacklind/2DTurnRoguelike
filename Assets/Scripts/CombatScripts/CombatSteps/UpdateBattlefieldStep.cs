@@ -2,15 +2,17 @@ using UnityEngine;
 
 public class UpdateBattlefieldStep : CombatStep
 {
-    public override CombatStep NextStep => new EndTurnStep();
+    public override CombatStep NextStep => new EndTurnStep(combatant);
 
-    private Move move;
+    private Ability ability;
     private Combatant combatant;
+    private Combatant[] targets;
 
-    public UpdateBattlefieldStep(Move move, Combatant user)
+    public UpdateBattlefieldStep(Ability ability, Combatant user, Combatant[] targets)
     {
-        this.move = move;
+        this.ability = ability;
         this.combatant = user;
+        this.targets = targets;
 
         
         // Checklist size will depend on the move, calculated in Begin()
@@ -18,26 +20,27 @@ public class UpdateBattlefieldStep : CombatStep
 
     public override void Begin()
     {
-        if (move is IDealsDamage)
+        Debug.Log("UpdateBattlefieldStep > Begin");
+        foreach(IEffectComponent ec in ability.EffectComponents)
         {
-            AddTask();
-            CombatHandler.Events.Subscribe<CombatEvent.DamageEvent>(OnDamageHandled);
+            if (ec is DamageEffectComponent)
+            {
+                CombatHandler.Events.Subscribe<CombatEvent.DamageEvent>(OnDamageHandled);
+            }
         }
 
-        combatant.UseMove(move);
+        ability.ApplyEffects(combatant, targets);
     }
 
     private void OnDamageHandled(CombatEvent.DamageEvent evt)
     {
+        Debug.Log("UpdateBattlefieldStep > OnDamagehandled");
         CombatHandler.Events.Unsubscribe<CombatEvent.DamageEvent>(OnDamageHandled);
-        Debug.Log($"{evt.Target.Character.Name} took {evt.Amount} damage. They have {evt.Target.Character.Health.CurrentHealth} hp remaining.");
 
         if(evt.Died)
         {
             AddTask();
             CombatHandler.Events.Publish(new CombatEvent.DeathEvent(evt.Target, this));
         }
-
-        CompleteTask();
     }
 }

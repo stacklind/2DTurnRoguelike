@@ -24,7 +24,7 @@ public class CombatQueue
     {
         UpdateIndex();
 
-        evt.Step.nextCombatant = combatants[currentIndex];
+        evt.Step.NextCombatant = combatants[currentIndex];
         evt.Step.CompleteTask();
     }
 
@@ -39,7 +39,6 @@ public class CombatQueue
         }
 
         evt.Step.CompleteTask();
-        Debug.Log($"{evt.Combatant.Character.Name} was removed from the combat queue. Remaining combatants: {combatants.Count}, Current index: {currentIndex}");
     }
 
     private void SortCombatants()
@@ -47,6 +46,10 @@ public class CombatQueue
         combatants = combatants.OrderBy(x => x.Character.Initiative).ToList();
     }
 
+    private void UnsubscribeFromEvents()
+    {
+
+    }
     private void UpdateIndex()
     {
         currentIndex = (currentIndex + 1) % combatants.Count;

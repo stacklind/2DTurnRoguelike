@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class BeginTurnStep : CombatStep
 {
-    public override CombatStep NextStep => new PerformMoveStep(Move, combatant);
+    public override CombatStep NextStep => new PerformAbilityStep(ability, combatant, targets);
 
-    public Move Move;
-
+    private Ability ability;
     private Combatant combatant;
+    private Combatant[] targets;
 
     public BeginTurnStep(Combatant currentCombatant)
     {
@@ -22,14 +22,20 @@ public class BeginTurnStep : CombatStep
 
     public override void Begin()
     {
-        CombatHandler.Events.Subscribe<CombatEvent.MoveChosenEvent>(OnMoveChosen);
+        Debug.Log("BeginTurnStep > Begin");
+        CombatHandler.Events.Subscribe<CombatEvent.AbilityActivatedEvent>(OnAbilityChosen);
         CombatHandler.Events.Publish(new CombatEvent.BeginTurnEvent(combatant, this));
     }
 
-    private void OnMoveChosen(CombatEvent.MoveChosenEvent evt)
+    private void OnAbilityChosen(CombatEvent.AbilityActivatedEvent evt)
     {
-        CombatHandler.Events.Unsubscribe<CombatEvent.MoveChosenEvent>(OnMoveChosen);
-        Move = evt.Move;
+        Debug.Log("BeginTurnStep > OnAbilityChosen");
+        CombatHandler.Events.Unsubscribe<CombatEvent.AbilityActivatedEvent>(OnAbilityChosen);
+
+        ability = evt.Ability;
+        combatant = evt.User;
+        targets = evt.Targets;
+
         CompleteTask();
     }
 }

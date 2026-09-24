@@ -4,9 +4,9 @@ public class TownEvent
 {
     public class CharacterSelectedEvent
     {
-        public readonly ICharacter Character;
+        public readonly Character Character;
 
-        public CharacterSelectedEvent(ICharacter character)
+        public CharacterSelectedEvent(Character character)
         {
             Character = character;
         }
@@ -14,9 +14,9 @@ public class TownEvent
 
     public class CharacterConfirmedEvent
     {
-        public readonly ICharacter Character;
+        public readonly Character Character;
 
-        public CharacterConfirmedEvent(ICharacter character)
+        public CharacterConfirmedEvent(Character character)
         {
             Character = character;
         }

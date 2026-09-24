@@ -1,18 +1,30 @@
 ﻿public class CombatUIEvent
 {
-    public class ShowMoveToolTipEvent
+    public class ShowCombatantTooltipEvent
     {
-        public readonly Move Move;
-        
-        public ShowMoveToolTipEvent(Move move)
+        public readonly Combatant Combatant;
+
+        public ShowCombatantTooltipEvent(Combatant combatant)
         {
-            Move = move;
+            Combatant = combatant;
         }
     }
 
-    public class ClearToolTipEvent
+    public class ShowAbilityTooltipEvent
     {
-        public ClearToolTipEvent()
+        public readonly Ability Ability;
+        public readonly Combatant Combatant;
+        
+        public ShowAbilityTooltipEvent(Ability ability, Combatant combatant)
+        {
+            Ability = ability;
+            Combatant = combatant;
+        }
+    }
+
+    public class ClearTooltipEvent
+    {
+        public ClearTooltipEvent()
         {
         }
     }

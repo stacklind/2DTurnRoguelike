@@ -37,4 +37,9 @@ public class EventBroker
             (existingDelegate as Action<T>)?.Invoke(eventObject);
         }
     }
+
+    public int Debug()
+    {
+        return eventDictionary.Count;
+    }
 }

@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bd90925f36f3434cae68a8da97a1161, type: 3}
+  m_Name: Rogue
+  m_EditorClassIdentifier: Assembly-CSharp::PlayableCharacterBase
+  Names:
+  - Leif
+  - Kenta
+  - Tommy
+  Moves:
+  - {fileID: 11400000, guid: 75242ad0d54186448a9e0f56b1a990eb, type: 2}
+  Health:
+    From: 12
+    To: 18
+  Initiative:
+    From: 3
+    To: 11
+  MinDamage:
+    From: 2
+    To: 4
+  MaxDamageAddition:
+    From: 3
+    To: 5
+  CritChance:
+    From: 0.05
+    To: 0.09
+  CritMultiplier:
+    From: 1.4
+    To: 1.6
+  Visuals:
+    TalkingHead: {fileID: -7604800433280865469, guid: a7564dad371a95f44be0dfdfed78a650, type: 3}
+    Avatar: {fileID: -3400552207155329294, guid: cb6eaa0cbdbda4245be4299b2afef01d, type: 3}
+  Audio:
+    Selected: {fileID: 8300000, guid: ce9168904da5a4e4cb3a960c907e68b1, type: 3}
+    Confirmed: {fileID: 8300000, guid: 3b9f1458ca191a44f9e6722ecc61be79, type: 3}
