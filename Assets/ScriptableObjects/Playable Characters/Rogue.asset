@@ -18,6 +18,7 @@ MonoBehaviour:
   - Tommy
   Abilities:
   - {fileID: 11400000, guid: 75242ad0d54186448a9e0f56b1a990eb, type: 2}
+  - {fileID: 11400000, guid: 55a52fa5fb793cb4cb9548b7162cfb0a, type: 2}
   Health:
     From: 12
     To: 18

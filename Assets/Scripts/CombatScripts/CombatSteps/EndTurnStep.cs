@@ -10,6 +10,8 @@ public class EndTurnStep : CombatStep
     public EndTurnStep(Combatant currentCombatant)
     {
         this.currentCombatant = currentCombatant;
+        // - Update status effects on current combatant
+        AddTask();
         // - End turn in the combat queue
         AddTask();
     }

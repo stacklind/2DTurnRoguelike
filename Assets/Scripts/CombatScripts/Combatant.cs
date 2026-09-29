@@ -52,16 +52,14 @@ public class Combatant : MonoBehaviour
         Character = c;
         IsPlayer = isPlayer;
 
-        buffs = new StatusEffectHandler(_UI.BuffHandler);
-        debuffs = new StatusEffectHandler(_UI.DebuffHandler);
+        buffs = new StatusEffectHandler(_UI.BuffHandler, this);
+        debuffs = new StatusEffectHandler(_UI.DebuffHandler, this);
 
         _UI.Initialize(this);
         _UI.Enable();
 
         spriteRenderer.sprite = Character.Visuals.Avatar;
         gameObject.SetActive(true);
-
-        InitializeEvents();
     }
 
     public void RemoveBuff(StatusEffectInstance buff)
@@ -93,25 +91,6 @@ public class Combatant : MonoBehaviour
         //buffs.Clear();
         //debuffs.Clear();
         _UI.Disable();
-        UnsubscribeFromEvents();
         gameObject.SetActive(false);
-    }
-
-    private void InitializeEvents()
-    {
-        CombatHandler.Events.Subscribe<CombatEvent.EndTurnEvent>(HandleEndTurnEvent);
-    }
-
-    private void HandleEndTurnEvent(CombatEvent.EndTurnEvent evt)
-    {
-        if(evt.CurrentCombatant == this)
-        {
-            evt.Step.CompleteTask();
-        }
-    }
-
-    private void UnsubscribeFromEvents()
-    {
-        CombatHandler.Events.Unsubscribe<CombatEvent.EndTurnEvent>(HandleEndTurnEvent);
     }
 }

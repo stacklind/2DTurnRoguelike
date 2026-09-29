@@ -3,9 +3,11 @@ using UnityEngine;
 
 public abstract class CombatStep
 {
+    private int tasksUntilComplete = 0;
     public bool IsCompleted => tasksUntilComplete <= 0;
     public abstract CombatStep NextStep { get; }
-    private int tasksUntilComplete = 0;
+
+    public int Test => tasksUntilComplete;
 
     public abstract void Begin();
 

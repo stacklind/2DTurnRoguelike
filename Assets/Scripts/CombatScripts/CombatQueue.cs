@@ -46,10 +46,6 @@ public class CombatQueue
         combatants = combatants.OrderBy(x => x.Character.Initiative).ToList();
     }
 
-    private void UnsubscribeFromEvents()
-    {
-
-    }
     private void UpdateIndex()
     {
         currentIndex = (currentIndex + 1) % combatants.Count;

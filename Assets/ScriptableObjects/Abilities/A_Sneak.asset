@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: A_Sneak
   m_EditorClassIdentifier: Assembly-CSharp::Ability_Sneak
   Name: Sneak
-  statusEffect: {fileID: 0}
+  statusEffect: {fileID: 11400000, guid: b8921ab314f3af34d952fe7d5dbace99, type: 2}

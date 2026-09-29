@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class StatusEffectHandler
 {
+    private Combatant _owner;
     private StatusEffectHandlerUI _UI;
 
     private HashSet<StatusEffectInstance> timedSEs;
@@ -9,12 +11,13 @@ public class StatusEffectHandler
 
     public int StacksReducedPerTurn { get; set; } = 1;
 
-    public StatusEffectHandler(StatusEffectHandlerUI ui)
+    public StatusEffectHandler(StatusEffectHandlerUI ui, Combatant owner)
     {
+        _owner = owner;
         _UI = ui;
         timedSEs = new HashSet<StatusEffectInstance>();
         triggeredSEs = new HashSet<StatusEffectInstance>();
-        CombatHandler.Events.Subscribe<CombatEvent.EndTurnEvent>(e => Tick());
+        CombatHandler.Events.Subscribe<CombatEvent.EndTurnEvent>(HandleEndTurnEvent);
     }
 
     public void Add(StatusEffectInstance se)
@@ -34,7 +37,7 @@ public class StatusEffectHandler
 
     public void Clear()
     {
-        CombatHandler.Events.Unsubscribe<CombatEvent.EndTurnEvent>(e => Tick());
+        CombatHandler.Events.Unsubscribe<CombatEvent.EndTurnEvent>(HandleEndTurnEvent);
 
         foreach(StatusEffectInstance se in timedSEs)
         {
@@ -66,21 +69,35 @@ public class StatusEffectHandler
         }
     }
 
+    private void HandleEndTurnEvent(CombatEvent.EndTurnEvent evt)
+    {
+        if(evt.CurrentCombatant == _owner)
+        {
+            Tick();
+            evt.Step.CompleteTask();
+        }
+    }
+
     private void Tick()
     {
-        foreach (TimedStatusEffectInstance se in timedSEs)
+        List<StatusEffectInstance> toRemove = new List<StatusEffectInstance>();
+        foreach (TimedStatusEffectInstance sei in timedSEs)
         {
-            se.Tick(StacksReducedPerTurn);
+            sei.Tick(StacksReducedPerTurn);
             
-            if(se.Stacks > 0)
+            if(sei.Stacks > 0)
             {
-                _UI.UpdateStatusEffect(se);
+                _UI.UpdateStatusEffect(sei);
             }
             else
             {
-                timedSEs.Remove(se);
-                _UI.RemoveStatusEffect(se);
+                toRemove.Add(sei);
             }
+        }
+
+        foreach(StatusEffectInstance sei in toRemove)
+        {
+            timedSEs.Remove(sei);
         }
     }
 

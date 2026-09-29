@@ -1,46 +1,22 @@
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Scriptable Objects/Abilities/Poisoned Dart")]
 public class Ability_PoisonedDart : Ability
 {
-    //private readonly int DEFAULT_DURATION = 3;
-    //private readonly int DEFAULT_REDUCTION = 5;
-    //public override string Name => "Poisoned Dart";
-    //public override Positions DefaultTargets => Positions.All;
+    public int MinRange;
+    public float DamageModifier;
+    public StatusEffect_PoisonedDart statusEffect;
 
-    //public override void Use(Combatant user)
-    //{
-    //    // Temporary targeting implementation
-    //    CombatHandler.State.MonsterTeam[0].ApplyDebuff(new Move_PoisonedDart.Debuff(Name, DEFAULT_DURATION, SEType.Duration, DEFAULT_REDUCTION));
-    //}
+    private void OnEnable()
+    {
+        TargetingComponent = new RangeSingleOpponentComponent(MinRange);
+        EffectComponents = new IEffectComponent[] { new StatusEffectComponent(statusEffect), new DamageEffectComponent(DamageModifier) };
+    }
 
-    //public class Debuff : StatusEffect
-    //{
-    //    private readonly int REDUCTION_AMOUNT;
-
-    //    public override int StrengthScore => REDUCTION_AMOUNT;
-
-    //    public override Sprite Icon { get; }
-
-    //    public Debuff(string name, int initialStacks, SEType type, int reductionAmount) : base(name, initialStacks, type)
-    //    {
-    //        REDUCTION_AMOUNT = reductionAmount;
-    //        Icon = Resources.Load<Sprite>("debuff_poisoned_dart");
-    //    }
-
-    //    protected override void ApplyInternal(Combatant combatant)
-    //    {
-    //        combatant.Character.Initiative -= REDUCTION_AMOUNT;
-    //    }
-
-    //    protected override void RemoveInternal(Combatant combatant)
-    //    {
-    //        combatant.Character.Initiative += REDUCTION_AMOUNT;
-    //    }
-    //}
     public override string GetTooltip(Combatant user)
     {
-        throw new System.NotImplementedException();
+        return $"Shoot a poisoned dart at a target, dealing {Mathf.FloorToInt(DamageModifier * user.Character.Damage.MinDamage)} - " +
+            $"{Mathf.FloorToInt(DamageModifier * user.Character.Damage.MaxDamage)}, and poisoning them for {statusEffect.InitialStacks} turns, " +
+            $"reducing their initiative by {statusEffect.InitiativeReduction} and dealing {statusEffect.DamagePerTurn} damage per turn.";
     }
 }
-
-

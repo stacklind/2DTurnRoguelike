@@ -8,4 +8,5 @@ public abstract class StatusEffect : ScriptableObject
     public int MaxStacks;
     public Sprite Icon;
     public abstract IStatusEffectBehaviour[] StatusEffectBehaviours { get; }
+    public abstract float[] StrengthScoreModifiers { get; }
 }

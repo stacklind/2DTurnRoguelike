@@ -7,6 +7,7 @@ public class StatusEffect_Sneak : TriggeredStatusEffect
     public override IStatusEffectBehaviour[] StatusEffectBehaviours => new IStatusEffectBehaviour[] { 
         new UntargetableSEBehaviour(), 
         new AlwaysCritSEBehaviour() };
+    public override float[] StrengthScoreModifiers => new[] { 0f, 1f }; 
 
     public override (Type, Delegate) InitializeTriggers(TriggeredStatusEffectInstance instance)
     {

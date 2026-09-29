@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffect_Sneak
   Name: Sneak
   IsBuff: 1
-  InitialStacks: 0
-  MaxStacks: 0
-  Icon: {fileID: 0}
+  InitialStacks: 1
+  MaxStacks: 1
+  Icon: {fileID: -3972900688206682728, guid: 08cf01f538617aa409755688831293ef, type: 3}

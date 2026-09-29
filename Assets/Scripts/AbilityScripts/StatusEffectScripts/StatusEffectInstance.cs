@@ -7,6 +7,7 @@ public abstract class StatusEffectInstance
     private bool isBuff;
     
     protected IStatusEffectBehaviour[] statusEffectBehaviours;
+    protected float[] strengthScoreModifiers;
 
     public Combatant AppliedTo { get; }
     public Sprite Icon { get; }
@@ -33,9 +34,9 @@ public abstract class StatusEffectInstance
         get
         {
             int score = 0;
-            foreach(IStatusEffectBehaviour seb in statusEffectBehaviours)
+            for (int i = 0; i < statusEffectBehaviours.Length; i++)
             {
-                score += seb.StrengthScore;
+                score += Mathf.FloorToInt(statusEffectBehaviours[i].StrengthScore * strengthScoreModifiers[i]);
             }
             return score;
         }
@@ -43,12 +44,13 @@ public abstract class StatusEffectInstance
 
     public StatusEffectInstance(StatusEffect statusEffect, Combatant user, Combatant target)
     {
-        maxStacks = statusEffect.MaxStacks;
+        maxStacks = statusEffect.MaxStacks > 0 ? statusEffect.MaxStacks : int.MaxValue;
         isBuff = statusEffect.IsBuff;
         Name = statusEffect.Name;
         Stacks = statusEffect.InitialStacks;
         Icon = statusEffect.Icon;
         statusEffectBehaviours = statusEffect.StatusEffectBehaviours;
+        strengthScoreModifiers = statusEffect.StrengthScoreModifiers;
 
         AppliedTo = target;
 
