@@ -22,14 +22,12 @@ public class BeginTurnStep : CombatStep
 
     public override void Begin()
     {
-        Debug.Log("BeginTurnStep > Begin");
         CombatHandler.Events.Subscribe<CombatEvent.AbilityActivatedEvent>(OnAbilityChosen);
         CombatHandler.Events.Publish(new CombatEvent.BeginTurnEvent(combatant, this));
     }
 
     private void OnAbilityChosen(CombatEvent.AbilityActivatedEvent evt)
     {
-        Debug.Log("BeginTurnStep > OnAbilityChosen");
         CombatHandler.Events.Unsubscribe<CombatEvent.AbilityActivatedEvent>(OnAbilityChosen);
 
         ability = evt.Ability;

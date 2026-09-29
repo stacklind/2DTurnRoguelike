@@ -20,7 +20,6 @@ public class UpdateBattlefieldStep : CombatStep
 
     public override void Begin()
     {
-        Debug.Log("UpdateBattlefieldStep > Begin");
         foreach(IEffectComponent ec in ability.EffectComponents)
         {
             if (ec is DamageEffectComponent)
@@ -34,7 +33,6 @@ public class UpdateBattlefieldStep : CombatStep
 
     private void OnDamageHandled(CombatEvent.DamageEvent evt)
     {
-        Debug.Log("UpdateBattlefieldStep > OnDamagehandled");
         CombatHandler.Events.Unsubscribe<CombatEvent.DamageEvent>(OnDamageHandled);
 
         if(evt.Died)

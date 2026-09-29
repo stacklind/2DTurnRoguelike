@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 [CreateAssetMenu(menuName="Scriptable Objects/Character Base/Playable Character")]
 public class PlayableCharacterBase : ScriptableObject
@@ -25,7 +23,7 @@ public class PlayableCharacterBase : ScriptableObject
     public PlayableCharacterAudio Audio;
 }
 
-[Serializable]
+[System.Serializable]
 public class FromTo<T>
 {
     public T From;

@@ -64,12 +64,15 @@ public class CombatEvent
     public class DamageEvent
     {
         public readonly int Amount;
-        public readonly Combatant Target;
         public readonly bool Died;
+        public readonly Combatant Source;
+        public readonly Combatant Target;
 
-        public DamageEvent(int amount, Combatant target, bool died)
+
+        public DamageEvent(int amount, Combatant source, Combatant target, bool died)
         {
             Amount = amount;
+            Source = source;
             Target = target;
             Died = died;
         }

@@ -58,8 +58,6 @@ public class CombatHandler : MonoBehaviour
 
     private Combatant[] BuildTeam(Character[] team, bool isPlayer)
     {
-        Debug.Log("Combathandler > BuildTeam");
-
         Combatant[] combatantTeam = new Combatant[team.Length];
 
         for (int i = 0; i < team.Length; i++)
@@ -74,13 +72,11 @@ public class CombatHandler : MonoBehaviour
 
     private void DoMonsterTurn(Combatant monster)
     {
-        Debug.Log("Combathandler > DoMonsterTurn");
         monster.Character.Abilities[0].Select(monster);
     }
 
     private void HandleNewTurnEvent(CombatEvent.BeginTurnEvent evt)
     {
-        Debug.Log("Combathandler > HandleNewTurnEvent");
         if (!evt.Combatant.IsPlayer)
         {
             DoMonsterTurn(evt.Combatant);
@@ -89,7 +85,6 @@ public class CombatHandler : MonoBehaviour
 
     private void HideCombatants()
     {
-        Debug.Log("Combathandler > HideCombatants");
         foreach (Combatant c in playerCombatants)
         {
             c.UI.gameObject.SetActive(false);
@@ -104,14 +99,12 @@ public class CombatHandler : MonoBehaviour
 
     private void InitializeEvents()
     {
-        Debug.Log("Combathandler > InitializeEvents");
         Events.Subscribe<CombatEvent.BeginCombatEvent>(InitializeCombatants);
         Events.Subscribe<CombatEvent.BeginTurnEvent>(HandleNewTurnEvent);
     }
 
     private void InitializeCombatants(CombatEvent.BeginCombatEvent evt)
     {
-        Debug.Log("Combathandler > InitializeCombatants");
         HideCombatants();
 
         Combatant[] playerTeam = BuildTeam(CombatLoadData.Team1.ToArray(), true);

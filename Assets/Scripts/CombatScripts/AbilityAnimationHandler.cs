@@ -14,14 +14,12 @@ public class AbilityAnimationHandler : MonoBehaviour
 
     private void PlayAnimation(CombatEvent.PerformAbilityEvent evt)
     {
-        Debug.Log("AbilityAnimationHandler > PlayAnimation");
         step = evt.Step;
         _animator.Play("Placeholder");
     }
 
     public void AnimationComplete()
     {
-        Debug.Log("AbilityAnimationHandler > AnimationComplete");
         step.CompleteTask();
     }
 }

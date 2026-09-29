@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class Combatant : MonoBehaviour
 {
@@ -36,23 +37,18 @@ public class Combatant : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    public void ApplyBuff(StatusEffect buff)
+    public void ApplyBuff(StatusEffectInstance buff)
     {
-        Debug.Log("Combatant > ApplyBuff");
-        buff.Apply(this);
         buffs.Add(buff);
     }
 
-    public void ApplyDebuff(StatusEffect debuff)
+    public void ApplyDebuff(StatusEffectInstance debuff)
     {
-        Debug.Log("Combatant > ApplyDebuff");
-        debuff.Apply(this);
         debuffs.Add(debuff);
     }
 
     public void Initialize(Character c, bool isPlayer)
     {
-        Debug.Log("Combatant > Initialize");
         Character = c;
         IsPlayer = isPlayer;
 
@@ -68,13 +64,22 @@ public class Combatant : MonoBehaviour
         InitializeEvents();
     }
 
-    public void TakeDamage(int amount)
+    public void RemoveBuff(StatusEffectInstance buff)
     {
-        Debug.Log("Combatant > TakeDamage");
+        buffs.Remove(buff);
+    }
+
+    public void RemoveDebuff(StatusEffectInstance debuff)
+    {
+        debuffs.Remove(debuff);
+    }
+
+    public void TakeDamage(int amount, Combatant source)
+    {
         bool isDead = Character.Health.ReduceHealth(amount);
         _UI.UpdateHealthBar(Character.Health.Ratio);
 
-        CombatHandler.Events.Publish(new CombatEvent.DamageEvent(amount, this, isDead));
+        CombatHandler.Events.Publish(new CombatEvent.DamageEvent(amount, source, this, isDead));
 
         if (isDead)
         {
@@ -84,10 +89,9 @@ public class Combatant : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Combatant > Die");
         // TODO play death animation and then set active in different method
-        buffs.Clear();
-        debuffs.Clear();
+        //buffs.Clear();
+        //debuffs.Clear();
         _UI.Disable();
         UnsubscribeFromEvents();
         gameObject.SetActive(false);

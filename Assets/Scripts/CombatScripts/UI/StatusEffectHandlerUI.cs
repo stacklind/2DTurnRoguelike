@@ -16,7 +16,7 @@ public class StatusEffectHandlerUI : MonoBehaviour
         InitializeImages();
     }
 
-    public void ApplyStatusEffect(StatusEffect se)
+    public void ApplyStatusEffect(StatusEffectInstance se)
     {
         if (available.Count == 0)
         {
@@ -30,7 +30,7 @@ public class StatusEffectHandlerUI : MonoBehaviour
         tmp.gameObject.SetActive(true);
     }
 
-    public void RemoveStatusEffect(StatusEffect se)
+    public void RemoveStatusEffect(StatusEffectInstance se)
     {
         StatusEffectInstanceUI tmp = inUse[se.Name];
         tmp.gameObject.SetActive(false);
@@ -39,7 +39,7 @@ public class StatusEffectHandlerUI : MonoBehaviour
         available.Enqueue(tmp);
     }
 
-    public void UpdateStatusEffect(StatusEffect se)
+    public void UpdateStatusEffect(StatusEffectInstance se)
     {
         inUse[se.Name].StacksText.text = $"{se.Stacks}";
     }

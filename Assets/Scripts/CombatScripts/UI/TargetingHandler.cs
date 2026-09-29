@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class TargetingHandler : MonoBehaviour
 {
@@ -21,14 +20,11 @@ public class TargetingHandler : MonoBehaviour
 
     private void InitializeEvents()
     {
-        Debug.Log("TargetingHandler > InitializeEvents");
         CombatHandler.Events.Subscribe<CombatEvent.AquireTargetsEvent>(OnAquireTarget);
     }
 
     private void OnAquireTarget(CombatEvent.AquireTargetsEvent evt)
     {
-        Debug.Log("TargetingHandler > OnAquireTarget");
-
         if (!evt.Package.User.IsPlayer)
         {
             evt.Package.Clicked = evt.Package.PossibleTargets[Random.Range(0, evt.Package.PossibleTargets.Length)];

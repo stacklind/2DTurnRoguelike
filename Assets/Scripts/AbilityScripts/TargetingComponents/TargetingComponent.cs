@@ -4,7 +4,6 @@ public abstract class TargetingComponent
 {
     public void AquireTargets(Combatant user)
     {
-        Debug.Log("TargetingComponent > AquireTargets");
         Combatant[] possibleTargets = GetPossibleTargets(user);
         TargetingPackage package = new TargetingPackage
         {
@@ -22,13 +21,11 @@ public abstract class TargetingComponent
 
     private void HandleConfirmationEvent(CombatEvent.AbilityConfirmedEvent evt)
     {
-        Debug.Log("TargetingComponent > HandleConfirmationEvent");
         CombatHandler.Events.Unsubscribe<CombatEvent.AbilityConfirmedEvent>(HandleConfirmationEvent);
         FinalizeTargets(evt.Package);
     }
     private void FinalizeTargets(TargetingPackage package)
     {
-        Debug.Log("TargetingComponent > FinalizeTargets");
         Combatant[] finalTargets = GetFinalTargets(package.User, package.PossibleTargets, package.Clicked);
         CombatHandler.Events.Publish(new CombatEvent.TargetsAquiredEvent(package.User, finalTargets));
     }

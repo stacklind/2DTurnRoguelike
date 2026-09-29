@@ -36,7 +36,6 @@ public class CombatantUI : MonoBehaviour
 
     public void UpdateHealthBar(float ratio)
     {
-        Debug.Log("CombatantUI > UpdateHealthBar");
         healthBar.Ratio = ratio;
     }
 }

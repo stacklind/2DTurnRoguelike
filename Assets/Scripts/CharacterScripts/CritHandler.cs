@@ -29,5 +29,17 @@ public class CritHandler
     }
 
     public float Roll() => Roll(1f);
-    public float Roll(float modifier) => AlwaysCrit || Random.Range(0, 100) < Chance * 100 * modifier ? Multiplier : 1f;
+    //public float Roll(float modifier) => AlwaysCrit || Random.Range(0, 100) < Chance * 100 * modifier ? Multiplier : 1f;
+    public float Roll(float modifier)
+    {
+        int result = Random.Range(0, 100);
+
+        if(AlwaysCrit || result < Chance * 100 * modifier)
+        {
+            Debug.Log("CRIT!");
+            return Multiplier;
+        }
+
+        return 1f;
+    }
 }

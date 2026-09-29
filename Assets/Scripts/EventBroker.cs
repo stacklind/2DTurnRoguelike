@@ -12,21 +12,44 @@ public class EventBroker
 
     public void Subscribe<T>(Action<T> listener)
     {
-        if (eventDictionary.TryGetValue(typeof(T), out Delegate existingDelegate))
+        //if (eventDictionary.TryGetValue(typeof(T), out Delegate existingDelegate))
+        //{
+        //    eventDictionary[typeof(T)] = (existingDelegate as Action<T>) + listener;
+        //}
+        //else
+        //{
+        //    eventDictionary[typeof(T)] = listener;
+        //}
+        Subscribe(typeof(T), listener);
+    }
+
+    public void Subscribe(Type eventType, Delegate listener)
+    {
+        if (eventDictionary.TryGetValue(eventType, out Delegate existingDelegate))
         {
-            eventDictionary[typeof(T)] = (existingDelegate as Action<T>) + listener;
+            eventDictionary[eventType] = Delegate.Combine(existingDelegate, listener);
         }
         else
         {
-            eventDictionary[typeof(T)] = listener;
+            eventDictionary[eventType] = listener;
         }
     }
 
     public void Unsubscribe<T>(Action<T> listener)
     {
-        if (eventDictionary.TryGetValue(typeof(T), out Delegate existingDelegate))
+        //if (eventDictionary.TryGetValue(typeof(T), out Delegate existingDelegate))
+        //{
+        //    eventDictionary[typeof(T)] = (existingDelegate as Action<T>) - listener;
+        //}
+
+        Unsubscribe(typeof(T), listener);
+    }
+
+    public void Unsubscribe(Type eventType, Delegate listener)
+    {
+        if (eventDictionary.TryGetValue(eventType, out Delegate existingDelegate))
         {
-            eventDictionary[typeof(T)] = (existingDelegate as Action<T>) - listener;
+            eventDictionary[eventType] = Delegate.Remove(existingDelegate, listener);
         }
     }
 
@@ -38,8 +61,8 @@ public class EventBroker
         }
     }
 
-    public int Debug()
+    public int Debug(Type type)
     {
-        return eventDictionary.Count;
+        return eventDictionary[type].GetInvocationList().Length;
     }
 }

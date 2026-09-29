@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bandit
   m_EditorClassIdentifier: Assembly-CSharp::MonsterBase
   Name: Bandit
-  Moves:
+  Abilities:
   - {fileID: 11400000, guid: 75242ad0d54186448a9e0f56b1a990eb, type: 2}
   MaxHealth: 11
   Initiative: 5

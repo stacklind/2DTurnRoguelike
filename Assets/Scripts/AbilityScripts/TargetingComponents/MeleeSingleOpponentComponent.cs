@@ -12,7 +12,6 @@ public class MeleeSingleOpponentComponent : TargetingComponent
 
     protected override Combatant[] GetPossibleTargets(Combatant user)
     {
-        Debug.Log("MeleeSingleOpponentComponent > GetPossibleTargets");
         var tmp = CombatHandler.State.GetOpponentTeam(user);
 
         if (tmp.Length > baseRange)
@@ -25,7 +24,6 @@ public class MeleeSingleOpponentComponent : TargetingComponent
 
     protected override Combatant[] GetFinalTargets(Combatant user, Combatant[] possibleTargets, Combatant clicked)
     {
-        Debug.Log("MeleeSingleOpponentComponent > GetFinalTargets");
         return new[] { clicked };
     }
 }

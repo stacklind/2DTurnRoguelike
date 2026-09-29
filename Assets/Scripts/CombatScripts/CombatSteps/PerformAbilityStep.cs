@@ -23,7 +23,6 @@ public class PerformAbilityStep : CombatStep
 
     public override void Begin()
     {
-        Debug.Log("PerformAbilityStep > Begin");
         CombatHandler.Events.Publish(new CombatEvent.PerformAbilityEvent( this));
     }
 }

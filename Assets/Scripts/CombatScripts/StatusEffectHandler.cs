@@ -4,24 +4,24 @@ public class StatusEffectHandler
 {
     private StatusEffectHandlerUI _UI;
 
-    private HashSet<StatusEffect> hasDuration;
-    private HashSet<StatusEffect> hasUses;
+    private HashSet<StatusEffectInstance> timedSEs;
+    private HashSet<StatusEffectInstance> triggeredSEs;
 
     public int StacksReducedPerTurn { get; set; } = 1;
 
     public StatusEffectHandler(StatusEffectHandlerUI ui)
     {
         _UI = ui;
-        hasDuration = new HashSet<StatusEffect>();
-        hasUses = new HashSet<StatusEffect>();
+        timedSEs = new HashSet<StatusEffectInstance>();
+        triggeredSEs = new HashSet<StatusEffectInstance>();
         CombatHandler.Events.Subscribe<CombatEvent.EndTurnEvent>(e => Tick());
     }
 
-    public void Add(StatusEffect se)
+    public void Add(StatusEffectInstance se)
     {
-        HashSet<StatusEffect> set = GetSetFromSEType(se.Type);
+        HashSet<StatusEffectInstance> set = GetSetFromType(se);
         
-        if (set.TryGetValue(se, out StatusEffect current))
+        if (set.TryGetValue(se, out StatusEffectInstance current))
         {
             ReapplyStatusEffect(se, current, set);
         }
@@ -36,40 +36,39 @@ public class StatusEffectHandler
     {
         CombatHandler.Events.Unsubscribe<CombatEvent.EndTurnEvent>(e => Tick());
 
-        foreach(StatusEffect se in hasDuration)
+        foreach(StatusEffectInstance se in timedSEs)
         {
             Remove(se);
         }
-        foreach(StatusEffect se in hasUses)
+        foreach(StatusEffectInstance se in triggeredSEs)
         {
             Remove(se);
         }
     }
 
-    public void Remove(StatusEffect se)
+    public void Remove(StatusEffectInstance se)
     {
-        HashSet<StatusEffect> set = GetSetFromSEType(se.Type);
+        HashSet<StatusEffectInstance> set = GetSetFromType(se);
 
-        se.Stacks = 0;
         set.Remove(se);
         _UI.RemoveStatusEffect(se);
     }
 
-    private HashSet<StatusEffect> GetSetFromSEType(SEType type)
+    private HashSet<StatusEffectInstance> GetSetFromType(StatusEffectInstance se)
     {
-        if (type == SEType.Duration)
+        if (se is TimedStatusEffectInstance)
         {
-            return hasDuration;
+            return timedSEs;
         }
         else
         {
-            return hasUses;
+            return triggeredSEs;
         }
     }
 
     private void Tick()
     {
-        foreach (StatusEffect se in hasDuration)
+        foreach (TimedStatusEffectInstance se in timedSEs)
         {
             se.Tick(StacksReducedPerTurn);
             
@@ -79,17 +78,18 @@ public class StatusEffectHandler
             }
             else
             {
-                hasDuration.Remove(se);
+                timedSEs.Remove(se);
                 _UI.RemoveStatusEffect(se);
             }
         }
     }
 
-    private void ReapplyStatusEffect(StatusEffect newSE, StatusEffect currentSE, HashSet<StatusEffect> set)
+    private void ReapplyStatusEffect(StatusEffectInstance newSE, StatusEffectInstance currentSE, HashSet<StatusEffectInstance> set)
     {
         int stacks = newSE.Stacks + currentSE.Stacks;
         if (newSE.StrengthScore > currentSE.StrengthScore)
         {
+            currentSE.Stacks = 0;
             set.Remove(currentSE);
             set.Add(newSE);
         }
