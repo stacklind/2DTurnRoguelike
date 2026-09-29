@@ -9,11 +9,11 @@ public class CharacterShop : MonoBehaviour
 
     private int selectedIndex;
 
-    private void Awake()
+    private void Start()
     {
         for (int i = 0; i < characterShopOptions.Length; i++)
         {
-            characterShopOptions[i].Character = Rogue.RandomlyGenerate();
+            characterShopOptions[i].Character = new Character(Constants.Instance.PlayableBases[0]);
         }
     }
 

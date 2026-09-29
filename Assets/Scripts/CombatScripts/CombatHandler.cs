@@ -1,10 +1,24 @@
-using NUnit.Framework;
+using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CombatHandler : MonoBehaviour
 {
-    public static EventBroker Events { get; private set; }
+    private static EventBroker _events;
+    public static EventBroker Events 
+    { 
+        get
+        {
+            if(_events == null)
+            {
+                _events = new EventBroker();
+            }
+
+            return _events;
+        }
+    }
 
     public static CombatState State { get; private set; }
 
@@ -16,25 +30,19 @@ public class CombatHandler : MonoBehaviour
 
     private CombatStep currentCombatStep;
 
-    private int turn = 0;
-
-    public CombatHandler()
-    {
-        InitializeEvents();
-
-    }
-
     private void Awake()
     {
-        CombatLoadData.Refresh();
-        CombatLoadData.Team1.Add(Rogue.RandomlyGenerate());
-        CombatLoadData.Team1.Add(Rogue.RandomlyGenerate());
-        CombatLoadData.Team2.Add(new Bandit());
-        CombatLoadData.Team2.Add(new Bandit());
+        InitializeEvents();
+    }
+
+    private void OnDestroy()
+    {
+        _events = null;
     }
 
     private void Start()
     {
+        CombatLoadData.Refresh();
         currentCombatStep = new BeginCombatStep();
         currentCombatStep.Begin();
     }
@@ -48,48 +56,59 @@ public class CombatHandler : MonoBehaviour
         }
     }
 
+    private Combatant[] BuildTeam(Character[] team, bool isPlayer)
+    {
+        Combatant[] combatantTeam = new Combatant[team.Length];
+
+        for (int i = 0; i < team.Length; i++)
+        {
+            Combatant c = isPlayer ? playerCombatants[i] : monsterCombatants[i];
+            c.Initialize(team[i], isPlayer);
+            combatantTeam[i] = c;
+        }
+
+        return combatantTeam;
+    }
+
+    private void DoMonsterTurn(Combatant monster)
+    {
+        monster.Character.Abilities[0].Select(monster);
+    }
+
     private void HandleNewTurnEvent(CombatEvent.BeginTurnEvent evt)
     {
-        Debug.Log($"Turn: {turn++}");
-
-        if(!evt.Combatant.IsPlayer)
+        if (!evt.Combatant.IsPlayer)
         {
             DoMonsterTurn(evt.Combatant);
         }
     }
 
-    private void DoMonsterTurn(Combatant combatant)
+    private void HideCombatants()
     {
-        Events.Publish(new CombatEvent.MoveChosenEvent(combatant.Character.MoveSet[0]));
+        foreach (Combatant c in playerCombatants)
+        {
+            c.UI.gameObject.SetActive(false);
+            c.gameObject.SetActive(false);
+        }
+        foreach (Combatant c in monsterCombatants)
+        {
+            c.UI.gameObject.SetActive(false);
+            c.gameObject.SetActive(false);
+        }
     }
 
     private void InitializeEvents()
     {
-        Events = new EventBroker();
         Events.Subscribe<CombatEvent.BeginCombatEvent>(InitializeCombatants);
         Events.Subscribe<CombatEvent.BeginTurnEvent>(HandleNewTurnEvent);
     }
 
     private void InitializeCombatants(CombatEvent.BeginCombatEvent evt)
     {
-        Combatant[] playerTeam = new Combatant[CombatLoadData.Team1.Count];
-        Combatant[] monsterTeam = new Combatant[CombatLoadData.Team2.Count];
+        HideCombatants();
 
-        for (int i = 0; i < CombatLoadData.Team1.Count; i++)
-        {
-            Combatant c = playerCombatants[i];
-            c.Initialize(CombatLoadData.Team1[i], true);
-            c.gameObject.SetActive(true);
-            playerTeam[i] = c;
-        }
-
-        for(int i = 0; i < CombatLoadData.Team2.Count; i++)
-        {
-            Combatant c = monsterCombatants[i];
-            c.Initialize(CombatLoadData.Team2[i], false);
-            c.gameObject.SetActive(true);
-            monsterTeam[i] = c;
-        }
+        Combatant[] playerTeam = BuildTeam(CombatLoadData.Team1.ToArray(), true);
+        Combatant[] monsterTeam = BuildTeam(CombatLoadData.Team2.ToArray(), false);
 
         State = new CombatState(playerTeam, monsterTeam);
         combatQueue = new CombatQueue(playerTeam.Concat(monsterTeam).ToArray());
@@ -97,4 +116,17 @@ public class CombatHandler : MonoBehaviour
         evt.Step.StartingCombatant = combatQueue.Current;
         evt.Step.CompleteTask();
     }
+
+    
+}
+
+[Flags]
+public enum Positions
+{
+    None = 0,
+    First = 1,
+    Second = 2,
+    Third = 4,
+    Forth = 8,
+    All = ~None
 }

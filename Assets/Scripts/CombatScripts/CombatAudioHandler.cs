@@ -5,7 +5,7 @@ public class CombatAudioHandler : SceneAudioHandler
     protected override void InitializeEventListeners()
     {
         CombatHandler.Events.Subscribe<CombatEvent.BeginCombatEvent>(StartMusic);
-        CombatHandler.Events.Subscribe<CombatEvent.PerformMoveEvent>(PlayMoveSfx);
+        CombatHandler.Events.Subscribe<CombatEvent.PerformAbilityEvent>(PlayMoveSfx);
     }
 
     private void StartMusic(CombatEvent.BeginCombatEvent evt)
@@ -14,7 +14,7 @@ public class CombatAudioHandler : SceneAudioHandler
         evt.Step.CompleteTask();
     }
 
-    private void PlayMoveSfx(CombatEvent.PerformMoveEvent evt)
+    private void PlayMoveSfx(CombatEvent.PerformAbilityEvent evt)
     {
         // TODO
         evt.Step.CompleteTask();

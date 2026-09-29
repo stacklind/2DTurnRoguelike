@@ -1,11 +1,44 @@
-using System;
-
 public class CombatEvent
 {
     private interface ICombatStepEvent<T>
     {
         public T Step { get; }
     }
+
+    public class AbilityActivatedEvent
+    {
+        public readonly Ability Ability;
+        public readonly Combatant User;
+        public readonly Combatant[] Targets;
+
+        public AbilityActivatedEvent(Ability ability, Combatant user, Combatant[] targets)
+        {
+            Ability = ability;
+            User = user;
+            Targets = targets;
+        }
+    }
+
+    public class AbilityConfirmedEvent
+    {
+        public readonly TargetingPackage Package;
+
+        public AbilityConfirmedEvent(TargetingPackage package)
+        {
+            Package = package;
+        }
+    }
+
+    public class AquireTargetsEvent
+    {
+        public readonly TargetingPackage Package;
+
+        public AquireTargetsEvent(TargetingPackage package)
+        {
+            Package = package;
+        }
+    }
+
     public class BeginCombatEvent : ICombatStepEvent<BeginCombatStep>
     {
         public BeginCombatStep Step { get; }
@@ -31,12 +64,15 @@ public class CombatEvent
     public class DamageEvent
     {
         public readonly int Amount;
-        public readonly Combatant Target;
         public readonly bool Died;
+        public readonly Combatant Source;
+        public readonly Combatant Target;
 
-        public DamageEvent(int amount, Combatant target, bool died)
+
+        public DamageEvent(int amount, Combatant source, Combatant target, bool died)
         {
             Amount = amount;
+            Source = source;
             Target = target;
             Died = died;
         }
@@ -56,20 +92,12 @@ public class CombatEvent
 
     public class EndTurnEvent : ICombatStepEvent<EndTurnStep>
     {
+        public readonly Combatant CurrentCombatant;
         public EndTurnStep Step { get; }
-        public EndTurnEvent(EndTurnStep step)
+        public EndTurnEvent(Combatant currentCombatant, EndTurnStep step)
         {
+            CurrentCombatant = currentCombatant;
             Step = step;
-        }
-    }
-
-    public class MoveChosenEvent
-    {
-        public readonly Move Move;
-
-        public MoveChosenEvent(Move move)
-        {
-            Move = move;
         }
     }
 
@@ -78,17 +106,25 @@ public class CombatEvent
 
     }
 
-    public class PerformMoveEvent : ICombatStepEvent<PerformMoveStep>
+    public class PerformAbilityEvent : ICombatStepEvent<PerformAbilityStep>
+    {
+        public PerformAbilityStep Step { get; }
+
+        public PerformAbilityEvent(PerformAbilityStep step)
+        {
+            Step = step;
+        }
+    }
+
+    public class TargetsAquiredEvent
     {
         public readonly Combatant User;
-        public readonly Move Move;
-        public PerformMoveStep Step { get; }
+        public readonly Combatant[] Targets;
 
-        public PerformMoveEvent(Combatant user, Move move, PerformMoveStep step)
+        public TargetsAquiredEvent(Combatant user, Combatant[] targets)
         {
             User = user;
-            Move = move;
-            Step = step;
+            Targets = targets;
         }
     }
 }

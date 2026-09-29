@@ -1,42 +1,83 @@
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class Combatant : MonoBehaviour
 {
     [SerializeField]
+    private CombatantUI _UI;
+
     private SpriteRenderer spriteRenderer;
+    private StatusEffectHandler buffs;
+    private StatusEffectHandler debuffs;
 
-    public ICharacter Character { get; set; }
+    private int _isTargetable = 1;
+
+    public Character Character { get; private set; }
     public bool IsPlayer { get; private set; }
-
-    private void Start()
+    public bool IsTargetable
     {
-        spriteRenderer.sprite = Character.Visuals.Avatar;
+        get => _isTargetable > 0;
+        set
+        {
+            if(value)
+            {
+                _isTargetable++;
+            }
+            else
+            {
+                _isTargetable--;
+            }
+        }
+    }
+    public CombatantUI UI => _UI;
 
+    private void Awake()
+    {
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    public void BeginTurn()
+    public void ApplyBuff(StatusEffectInstance buff)
     {
-
+        buffs.Add(buff);
     }
 
-    private void Die()
+    public void ApplyDebuff(StatusEffectInstance debuff)
     {
-        // TODO play death animation and then set active in different method
-        gameObject.SetActive(false);
-        Debug.Log($"{Character.Name} has died.");
+        debuffs.Add(debuff);
     }
 
-    public void Initialize(ICharacter c, bool isPlayer)
+    public void Initialize(Character c, bool isPlayer)
     {
         Character = c;
         IsPlayer = isPlayer;
+
+        buffs = new StatusEffectHandler(_UI.BuffHandler, this);
+        debuffs = new StatusEffectHandler(_UI.DebuffHandler, this);
+
+        _UI.Initialize(this);
+        _UI.Enable();
+
+        spriteRenderer.sprite = Character.Visuals.Avatar;
+        gameObject.SetActive(true);
     }
 
-    public void TakeDamage(int amount)
+    public void RemoveBuff(StatusEffectInstance buff)
     {
-        Debug.Log($"{Character.Name} took {amount} damage.");
+        buffs.Remove(buff);
+    }
+
+    public void RemoveDebuff(StatusEffectInstance debuff)
+    {
+        debuffs.Remove(debuff);
+    }
+
+    public void TakeDamage(int amount, Combatant source)
+    {
         bool isDead = Character.Health.ReduceHealth(amount);
-        CombatHandler.Events.Publish(new CombatEvent.DamageEvent(amount, this, isDead));
+        _UI.UpdateHealthBar(Character.Health.Ratio);
+
+        CombatHandler.Events.Publish(new CombatEvent.DamageEvent(amount, source, this, isDead));
 
         if (isDead)
         {
@@ -44,13 +85,12 @@ public class Combatant : MonoBehaviour
         }
     }
 
-    public void UseMove(Move move)
+    private void Die()
     {
-        if (!Character.MoveSet.Contains(move))
-        {
-            throw new System.ArgumentException();
-        }
-
-        move.Use(Character);
+        // TODO play death animation and then set active in different method
+        //buffs.Clear();
+        //debuffs.Clear();
+        _UI.Disable();
+        gameObject.SetActive(false);
     }
 }

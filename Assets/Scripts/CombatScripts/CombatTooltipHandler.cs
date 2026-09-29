@@ -11,32 +11,22 @@ public class CombatTooltipHandler : MonoBehaviour
     private void OnEnable()
     {
         ClearToolTip(null);
-        CombatHandler.Events.Subscribe<CombatUIEvent.ShowMoveToolTipEvent>(BuildMoveToolTip);
-        CombatHandler.Events.Subscribe<CombatUIEvent.ClearToolTipEvent>(ClearToolTip);
+        CombatHandler.Events.Subscribe<CombatUIEvent.ShowAbilityTooltipEvent>(BuildMoveToolTip);
+        CombatHandler.Events.Subscribe<CombatUIEvent.ClearTooltipEvent>(ClearToolTip);
     }
 
     private void OnDisable()
     {
-        CombatHandler.Events.Unsubscribe<CombatUIEvent.ShowMoveToolTipEvent>(BuildMoveToolTip);
-        CombatHandler.Events.Unsubscribe<CombatUIEvent.ClearToolTipEvent>(ClearToolTip);
+        CombatHandler.Events.Unsubscribe<CombatUIEvent.ShowAbilityTooltipEvent>(BuildMoveToolTip);
+        CombatHandler.Events.Unsubscribe<CombatUIEvent.ClearTooltipEvent>(ClearToolTip);
     }
 
-    private void BuildMoveToolTip(CombatUIEvent.ShowMoveToolTipEvent evt)
+    private void BuildMoveToolTip(CombatUIEvent.ShowAbilityTooltipEvent evt)
     {
-        headerText.text = evt.Move.Name;
-        string body = "";
-        if(evt.Move is IDealsDamage)
-        {
-            body += $"Dmg: {((IDealsDamage)evt.Move).DamageModifier}x\n";
-        }
-        if(evt.Move is ICanCrit)
-        {
-            body += $"Crit chance: {((ICanCrit)evt.Move).CritChanceModifier}x\n";
-        }
-        bodyText.text = body.Substring(0, body.Length - 1);
+        bodyText.text = evt.Ability.GetTooltip(evt.Combatant);
     }
 
-    private void ClearToolTip(CombatUIEvent.ClearToolTipEvent evt)
+    private void ClearToolTip(CombatUIEvent.ClearTooltipEvent evt)
     {
         headerText.text = "";
         bodyText.text = "";

@@ -11,8 +11,8 @@ public class CharacterShopOption : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI characterMoves;
 
-    private ICharacter _character;
-    public ICharacter Character 
+    private Character _character;
+    public Character Character 
     {
         get => _character;
         set
@@ -36,9 +36,9 @@ public class CharacterShopOption : MonoBehaviour
     private void UpdateCharacterMoves()
     {
         string text = "Moves:";
-        for(int i = 0; i < _character.MoveSet.Count; i++)
+        for(int i = 0; i < _character.Abilities.Count; i++)
         {
-            text += $" {_character.MoveSet[i].Name} |";
+            text += $" {_character.Abilities[i].Name} |";
         }
         text = text.Substring(0, text.Length - 1);
         characterMoves.text = text;

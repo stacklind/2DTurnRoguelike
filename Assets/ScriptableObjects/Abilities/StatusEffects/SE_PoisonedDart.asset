@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b269024ace3c1684c88ebf3af3465ff7, type: 3}
+  m_Name: SE_PoisonedDart
+  m_EditorClassIdentifier: Assembly-CSharp::StatusEffect_PoisonedDart
+  Name: Poisoned Dart
+  IsBuff: 0
+  InitialStacks: 3
+  MaxStacks: 0
+  Icon: {fileID: 752297042324888395, guid: e00637beca32d81458e747cba8fd0574, type: 3}
+  DamagePerTurn: 2
+  InitiativeReduction: 5

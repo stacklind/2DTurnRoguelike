@@ -36,9 +36,9 @@ public class CharacterShopInfo : MonoBehaviour
                                 $"Damage: {evt.Character.Damage.MinDamage}-{evt.Character.Damage.MaxDamage}\n" +
                                 $"Crit: {evt.Character.Crit.Chance * 100}%/{evt.Character.Crit.Multiplier}x";
         characterMoves.text = "";
-        for(int i = 0; i < evt.Character.MoveSet.Count; i++)
+        for(int i = 0; i < evt.Character.Abilities.Count; i++)
         {
-            characterMoves.text += evt.Character.MoveSet[i].Name + "\n";
+            characterMoves.text += evt.Character.Abilities[i].Name + "\n";
         }
         characterMoves.text = characterMoves.text.Substring(0, characterMoves.text.Length - 1);
     }
