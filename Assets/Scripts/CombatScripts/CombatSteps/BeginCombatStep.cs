@@ -8,13 +8,7 @@ public class BeginCombatStep : CombatStep
     
     public BeginCombatStep()
     {
-        // Checklist:
-        // - Initialize combatants
-        AddTask();
-        // - Start playing music
-        AddTask();
-        //
-        // Total: 2
+
     }
 
     public override void Begin()

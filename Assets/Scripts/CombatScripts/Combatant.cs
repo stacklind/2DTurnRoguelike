@@ -88,8 +88,7 @@ public class Combatant : MonoBehaviour
     private void Die()
     {
         // TODO play death animation and then set active in different method
-        //buffs.Clear();
-        //debuffs.Clear();
+        CombatHandler.Events.Publish(new CombatEvent.DeathEvent(this));
         _UI.Disable();
         gameObject.SetActive(false);
     }

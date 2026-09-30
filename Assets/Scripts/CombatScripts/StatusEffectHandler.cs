@@ -74,7 +74,6 @@ public class StatusEffectHandler
         if(evt.CurrentCombatant == _owner)
         {
             Tick();
-            evt.Step.CompleteTask();
         }
     }
 
