@@ -22,17 +22,17 @@ public class CombatantInfoHandler : MonoBehaviour
 
     private void Start()
     {
-        CombatHandler.Events.Subscribe<CombatEvent.BeginTurnEvent>(HandleEvent);
+        CombatHandler.Events.Subscribe<CombatEvent.BeginTurnEvent>(HandleBTE);
     }
 
-    private void HandleEvent(CombatEvent.BeginTurnEvent evt)
+    private void HandleBTE(CombatEvent.BeginTurnEvent evt)
     {
         if(evt.Combatant.IsPlayer)
         {
             UpdateInfo(evt.Combatant);
         }
-        evt.Step.CompleteTask();
     }
+
     private void UpdateInfo(Combatant combatant)
     {
         healthInfo.text = $"HP: {combatant.Character.Health.CurrentHealth}/{combatant.Character.Health.MaxHealth}";

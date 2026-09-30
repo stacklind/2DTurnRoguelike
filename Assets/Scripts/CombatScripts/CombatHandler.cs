@@ -114,7 +114,6 @@ public class CombatHandler : MonoBehaviour
         combatQueue = new CombatQueue(playerTeam.Concat(monsterTeam).ToArray());
 
         evt.Step.StartingCombatant = combatQueue.Current;
-        evt.Step.CompleteTask();
     }
 
     

@@ -12,26 +12,21 @@ public class BeginTurnStep : CombatStep
     {
         combatant = currentCombatant;
 
-        //  - CombatantInfo updated
-        AddTask();
-        //  - MoveButtons updated
-        AddTask();
-        //  - Move chosen
+        //  - Ability chosen
         AddTask();
     }
 
     public override void Begin()
     {
-        CombatHandler.Events.Subscribe<CombatEvent.AbilityActivatedEvent>(OnAbilityChosen);
+        CombatHandler.Events.Subscribe<CombatEvent.AbilityActivatedEvent>(OnAbilityActivated);
         CombatHandler.Events.Publish(new CombatEvent.BeginTurnEvent(combatant, this));
     }
 
-    private void OnAbilityChosen(CombatEvent.AbilityActivatedEvent evt)
+    private void OnAbilityActivated(CombatEvent.AbilityActivatedEvent evt)
     {
-        CombatHandler.Events.Unsubscribe<CombatEvent.AbilityActivatedEvent>(OnAbilityChosen);
+        CombatHandler.Events.Unsubscribe<CombatEvent.AbilityActivatedEvent>(OnAbilityActivated);
 
         ability = evt.Ability;
-        combatant = evt.User;
         targets = evt.Targets;
 
         CompleteTask();

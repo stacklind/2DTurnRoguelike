@@ -4,9 +4,9 @@ public class PerformAbilityStep : CombatStep
 {
     public override CombatStep NextStep => new UpdateBattlefieldStep(Ability, User, Targets);
 
-    public Combatant User;
-    public Ability Ability;
-    public Combatant[] Targets;
+    public Combatant User { get; }
+    public Ability Ability { get; }
+    public Combatant[] Targets { get; }
 
     public PerformAbilityStep(Ability ability, Combatant user, Combatant[] targets)
     {
@@ -23,6 +23,6 @@ public class PerformAbilityStep : CombatStep
 
     public override void Begin()
     {
-        CombatHandler.Events.Publish(new CombatEvent.PerformAbilityEvent( this));
+        CombatHandler.Events.Publish(new CombatEvent.PerformAbilityEvent(this));
     }
 }

@@ -17,21 +17,20 @@ public class AbilityButtonHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        CombatHandler.Events.Subscribe<CombatEvent.BeginTurnEvent>(HandleEvent);
+        CombatHandler.Events.Subscribe<CombatEvent.BeginTurnEvent>(HandleBTE);
     }
 
     private void OnDisable()
     {
-        CombatHandler.Events.Unsubscribe<CombatEvent.BeginTurnEvent>(HandleEvent);
+        CombatHandler.Events.Unsubscribe<CombatEvent.BeginTurnEvent>(HandleBTE);
     }
 
-    private void HandleEvent(CombatEvent.BeginTurnEvent evt)
+    private void HandleBTE(CombatEvent.BeginTurnEvent evt)
     {
         if (evt.Combatant.IsPlayer)
         {
             UpdateButtons(evt.Combatant);
         }
-        evt.Step.CompleteTask();
     }
 
     private void UpdateButtons(Combatant combatant)

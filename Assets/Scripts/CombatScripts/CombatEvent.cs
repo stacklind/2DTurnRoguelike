@@ -81,12 +81,9 @@ public class CombatEvent
     public class DeathEvent
     {
         public readonly Combatant Combatant;
-        public readonly UpdateBattlefieldStep Step;
-
-        public DeathEvent(Combatant combatant, UpdateBattlefieldStep step)
+        public DeathEvent(Combatant combatant)
         {
             Combatant = combatant;
-            Step = step;
         }
     }
 

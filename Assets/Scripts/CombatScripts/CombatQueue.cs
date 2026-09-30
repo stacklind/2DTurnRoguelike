@@ -25,7 +25,6 @@ public class CombatQueue
         UpdateIndex();
 
         evt.Step.NextCombatant = combatants[currentIndex];
-        evt.Step.CompleteTask();
     }
 
     private void RemoveCombatant(CombatEvent.DeathEvent evt)
@@ -37,8 +36,6 @@ public class CombatQueue
         {
             currentIndex--;
         }
-
-        evt.Step.CompleteTask();
     }
 
     private void SortCombatants()
